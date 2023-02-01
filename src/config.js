@@ -9,8 +9,27 @@ const PORT = globalThis?.Deno?.env?.get("PORT") || globalThis?.process?.env?.POR
 
 OVERSEAS = (OVERSEAS === '1')
 
+const BANNER = `
+
+██████   ██████           █████     ███                     
+▒▒██████ ██████           ▒▒███     ▒▒▒                      
+ ▒███▒█████▒███   ██████  ███████   ████  ████████    ███████
+ ▒███▒▒███ ▒███  ███▒▒███▒▒▒███▒   ▒▒███ ▒▒███▒▒███  ███▒▒███
+ ▒███ ▒▒▒  ▒███ ▒███████   ▒███     ▒███  ▒███ ▒███ ▒███ ▒███
+ ▒███      ▒███ ▒███▒▒▒    ▒███ ███ ▒███  ▒███ ▒███ ▒███ ▒███
+ █████     █████▒▒██████   ▒▒█████  █████ ████ █████▒▒███████
+▒▒▒▒▒     ▒▒▒▒▒  ▒▒▒▒▒▒     ▒▒▒▒▒  ▒▒▒▒▒ ▒▒▒▒ ▒▒▒▒▒  ▒▒▒▒▒███
+                                                     ███ ▒███
+                                                    ▒▒██████ 
+                                                     ▒▒▒▒▒▒  
+`
+
+const HELLO = "你好，这是Meting-API 自行部署请参考 https://github.com/xizeyoupan/Meting-API"
+
 export default {
     OVERSEAS,
     isDeno: globalThis?.Deno !== undefined,
-    PORT
+    PORT,
+    BANNER,
+    HELLO
 }
