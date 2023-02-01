@@ -18,6 +18,7 @@ if (isDeno) {
 }
 // 下载deno
 // 编译，运行 deno run --allow-net --allow-env .\cloudflare-workers.js
+// deno run --allow-net --allow-env POST=10001 .\cloudflare-workers.js
 // https://honojs.dev/docs/getting-started/deno/
 
 if (isNode) serve = (await import('@hono/node-server')).serve
@@ -27,7 +28,7 @@ const app = new Hono()
 // CROS https://honojs.dev/docs/builtin-middleware/cors/
 app.use('/', cors())
 app.use('/api', cors({
-    origin: 'https://xucux.github.io/',
+    origin: 'https://xucux.github.io',
     allowHeaders: ['X-Custom-Header', 'Upgrade-Insecure-Requests'],
     allowMethods: ['POST', 'GET', 'OPTIONS'],
     exposeHeaders: ['Content-Length'],

@@ -11,7 +11,7 @@
     "node": ">=18.0.0"
   },
   "type": "module",
-  "author": "xizeyoupan",
+  "author": "xizeyoupan & xucux",
   "license": "MIT",
   "devDependencies": {
     "esbuild-plugin-resolve": "^1.0.3"
