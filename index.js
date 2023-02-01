@@ -23,8 +23,9 @@ if (isDeno) {
 if (isNode) serve = (await import('@hono/node-server')).serve
 // https://honojs.dev/
 const app = new Hono()
+
+// CROS https://honojs.dev/docs/builtin-middleware/cors/
 app.use('/', cors())
-// https://honojs.dev/docs/builtin-middleware/cors/
 app.use('/api', cors({
     origin: 'https://xucux.github.io/',
     allowHeaders: ['X-Custom-Header', 'Upgrade-Insecure-Requests'],
@@ -33,13 +34,27 @@ app.use('/api', cors({
     maxAge: 700,
     credentials: true,
   }))
+
+// Logger  
 app.use('*', logger())
+
+// Routing
 app.get('/api', api)
 app.get('/', (c) => c.html(
     `<!DOCTYPE html>
       <p style="color: #9b9b9b">${config.HELLO}</p>`
 ))
 
+// Server Error https://honojs.dev/docs/api/hono/
+app.notFound((c) => {
+    return c.text('404 Not Found', 404)
+})
+app.onError((err, c) => {
+    console.error(`${err}`)
+    return c.text('500 Server Error', 500)
+})
+
+// Listener
 if (isDeno) {
     serve(app.fetch, { port: config.PORT })
 } else if (isNode) {
