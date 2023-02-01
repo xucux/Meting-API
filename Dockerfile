@@ -12,6 +12,9 @@ ARG GID
 
 ENV UID=${UID:-1010}
 ENV GID=${GID:-1010}
+ENV PORT=3000
+ENV ORIGIN=*
+ENV DOMAIN=
 
 RUN addgroup -g ${GID} --system meting \
     && adduser -G meting --system -D -s /bin/sh -u ${UID} meting
@@ -22,6 +25,6 @@ RUN deno cache /app/dist/cloudflare-workers.js
 RUN chown -R meting:meting /app
 USER meting
 
-EXPOSE 3000
+EXPOSE ${PORT}
 
-CMD deno run --allow-net --allow-env /app/dist/cloudflare-workers.js
+CMD deno run --allow-net --allow-env /app/dist/cloudflare-workers.js --PORT=${PORT} --ORIGIN=${ORIGIN} --DOMAIN=${DOMAIN}
