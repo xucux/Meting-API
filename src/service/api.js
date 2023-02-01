@@ -2,6 +2,12 @@ import Providers from "../providers/index.js"
 import { format as lyricFormat, getPathFromURL } from "../util.js"
 
 export default async (ctx) => {
+    const referer = ctx.req.headers.get('Referer')
+    console.log(referer)
+    if(!referer || referer === '') {
+        ctx.status(500)
+        return ctx.json({ status: 500, message: 'Gateway Error' })
+    }
 
     const p = new Providers()
 
