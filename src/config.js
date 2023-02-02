@@ -20,11 +20,11 @@ OVERSEAS = (OVERSEAS === '1')
 
 const PORT = params['PORT'] || 3000
 
-const ORIGIN = params['ORIGIN'] || "https://xucux.github.io"
+const ORIGIN = params['ORIGIN'] || "*"
 
-const DOMAIN = params['DOMAIN'] || "xucux.github.io"
+const DOMAIN = params['DOMAIN'] || ""
 
-const NOREFERER = params['NOREFERER'] || true
+const REFERER_EMPTY = params['REFERER_EMPTY']
 
 const HELLO = "你好，这是Meting-API 自行部署请参考 https://github.com/xizeyoupan/Meting-API"
 export default {
@@ -35,5 +35,5 @@ export default {
     HELLO,
     ORIGIN,
     DOMAIN,
-    NOREFERER
+    REFERER_EMPTY
 }

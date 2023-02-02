@@ -1,10 +1,12 @@
 import Providers from "../providers/index.js"
+import config from '../config.js'
 import { format as lyricFormat, getPathFromURL } from "../util.js"
 
 export default async (ctx) => {
     const referer = ctx.req.headers.get('Referer')
     console.log(referer)
-    if(!referer || referer === '') {
+    console.log(config.REFERER_EMPTY)
+    if( (!referer || referer === '') && (config.REFERER_EMPTY === true )) {
         ctx.status(500)
         return ctx.json({ status: 500, message: 'Gateway Error' })
     }

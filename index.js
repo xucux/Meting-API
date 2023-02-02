@@ -18,7 +18,8 @@ if (isDeno) {
 }
 // 下载deno
 // 编译，运行 deno run --allow-net --allow-env .\cloudflare-workers.js
-// deno run --allow-net --allow-env POST=10001 .\cloudflare-workers.js
+//  deno run --allow-net --allow-env .\cloudflare-workers.js
+
 // https://honojs.dev/docs/getting-started/deno/
 
 if (isNode) serve = (await import('@hono/node-server')).serve
