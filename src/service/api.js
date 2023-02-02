@@ -11,11 +11,14 @@ function checkrefer(referer){
 export default async (ctx) => {
     const referer = ctx.req.headers.get('Referer')
     console.log(referer)
-    // 如果允许空referer则放行，即只有REFERER_EMPTY为true是放行
-    if( (!referer || referer === '') && !(flags.REFERER_EMPTY === true) ) {
-        ctx.status(500)
-        return ctx.json({ status: 500, message: 'Gateway Error' })
+    // 如果允许空referer则放行，即只有REFERER_EMPTY为true是允许放行
+    if (!(flags.REFERER_EMPTY === true || flags.REFERER_EMPTY === 'true')) {
+        if( (!referer || referer === null || referer === '') ) {
+            ctx.status(500)
+            return ctx.json({ status: 500, message: 'Gateway Error' })
+        }
     }
+
     // 如果referer包含放行的域名，则放行
     if( !(referer && flags.REFERER_CHECK && checkrefer(referer)) ) {
         ctx.status(500)

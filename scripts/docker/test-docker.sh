@@ -26,7 +26,7 @@ done
 
 if [[ $RETRY -gt $MAX_RETRIES ]]; then
     echo "Unable to run, aborted. And print http connection"
-    curl -m 10 -v localhost:3000/api -o /dev/null
+    curl -m 10 -v localhost:3000/api
     exit 1
 else
     if [[ $HTTP_CODE -ne 200 ]]; then
