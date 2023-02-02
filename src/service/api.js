@@ -20,7 +20,7 @@ export default async (ctx) => {
     }
 
     // 如果referer包含放行的域名，则放行
-    if( !(referer && flags.REFERER_CHECK && checkrefer(referer)) ) {
+    if( referer && flags.REFERER_CHECK && checkrefer(referer)  ) {
         ctx.status(500)
         return ctx.json({ status: 500, message: 'Error Referer' })
     }

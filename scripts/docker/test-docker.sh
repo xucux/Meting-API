@@ -5,7 +5,7 @@ MAX_RETRIES=10
 # Try running the docker and get the output
 # then try getting /api
 
-docker run -d -p 3000:3000 -e REFERER_EMPTY=true meting-api:${TAG}
+docker run -d -p 3000:3000 meting-api:${TAG}
 
 if [[ $? -ne 0 ]]
 then
