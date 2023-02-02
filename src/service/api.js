@@ -6,7 +6,7 @@ export default async (ctx) => {
     const referer = ctx.req.headers.get('Referer')
     console.log(referer)
     console.log(config.REFERER_EMPTY)
-    if( (!referer || referer === '') && (config.REFERER_EMPTY === true )) {
+    if( (!referer || referer === '') && (config.REFERER_EMPTY === false )) {
         ctx.status(500)
         return ctx.json({ status: 500, message: 'Gateway Error' })
     }
