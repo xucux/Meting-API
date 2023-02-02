@@ -12,7 +12,7 @@ export default async (ctx) => {
     const referer = ctx.req.headers.get('Referer')
     console.log(referer)
     // 如果允许空referer则放行
-    if( (!referer || referer === '') && (flags.REFERER_EMPTY === true) ) {
+    if( (!referer || referer === '') && !(flags.REFERER_EMPTY === true) ) {
         ctx.status(500)
         return ctx.json({ status: 500, message: 'Gateway Error' })
     }
