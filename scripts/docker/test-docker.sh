@@ -16,6 +16,7 @@ fi
 RETRY=1
 
 HTTP_CODE=$(curl -m 10 localhost:3000/api -w "%{http_code}" -o /dev/null)
+curl -m 10 -v localhost:3000/api
 while [[ $? -ne 0 || "$HTTP_CODE" -ne 200 ]] && [[ $RETRY -lt $MAX_RETRIES ]]; do
     echo "HTTP_CODE: ${HTTP_CODE}"
     sleep 5
@@ -26,7 +27,6 @@ done
 
 if [[ $RETRY -gt $MAX_RETRIES ]]; then
     echo "Unable to run, aborted. And print http connection"
-    curl -m 10 -v localhost:3000/api
     exit 1
 else
     if [[ $HTTP_CODE -ne 200 ]]; then
