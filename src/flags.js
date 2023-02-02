@@ -16,7 +16,7 @@ const ORIGIN = params['ORIGIN'] || "https://xucux.github.io"
 // 域名
 const DOMAIN = params['DOMAIN'] || "xucux.github.io"
 // REFERER允许为空
-const REFERER_EMPTY = params['REFERER_EMPTY'] || true
+const REFERER_EMPTY = params['REFERER_EMPTY']
 // 校验REFERER
 const REFERER_CHECK = params['REFERER_CHECK'] || null
 

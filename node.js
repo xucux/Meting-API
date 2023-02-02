@@ -11,10 +11,12 @@ const app = new Hono()
 // CROS https://honojs.dev/docs/builtin-middleware/cors/
 app.use('*', cors())
 app.use('*', logger())
-app.get('/', (c) => c.text(flags.HELLO_WORLD))
 app.use('/api', cors(flags.CROS))
+
+app.get('/', (c) => c.text(flags.HELLO_WORLD))
 app.get('/api', api)
 app.get('/test', handler)
+
 // Server Error https://honojs.dev/docs/api/hono/
 app.notFound((c) => {
     return c.text('404 Not Found 🌏', 404)
