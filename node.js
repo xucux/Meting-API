@@ -27,5 +27,5 @@ app.onError((err, c) => {
 })
 serve({
     fetch: app.fetch,
-    port: config.PORT
+    port: flags.PORT
 })
