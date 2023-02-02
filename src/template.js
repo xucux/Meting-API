@@ -13,7 +13,7 @@ const html = `
     <script>
         var meting_api = 'api?server=:server&type=:type&id=:id&auth=:auth&r=:r';
     </script>
-    <script src="https://unpkg.com/@xizeyoupan/meting/dist/Meting.min.js"></script>
+    <script src="https://unpkg.com/@xizeyoupan/meting@latest/dist/Meting.min.js"></script>
 
     <div>网易单曲
     <meting-js server="netease" type="song" id="473403185" />

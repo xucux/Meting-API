@@ -1,5 +1,7 @@
 # Meting-API
 
+https://m.boochinoob.shop/test
+
 ## 写在前面
 
 Meting后端的api结构较为复杂，基础是一个[接口](https://github.com/metowolf/Meting/blob/master/src/Meting.php)，原作者在此基础上增加了[php后端](https://github.com/metowolf/Meting-API/blob/master/api/root/var/www/meting/public/index.php)，又用node做了一层[wrapper](https://github.com/metowolf/Meting-API/tree/master/server)。
@@ -38,14 +40,14 @@ https://meting-dd.2333332.xyz/api => Deno Deploy
 
 **从国内访问**
 
-|        | 单曲/song | 歌单/playlist |
-| ------ | --------- | ------------- |
-| 网易云 | √         | √             |
-| qq音乐 | √*        | √*            |
-| more   |           |               |
+|        | 单曲/song | 歌单/playlist | 地区限制 |
+| ------ | --------- | ------------- | -------- |
+| 网易云 | √         | √             | 无       |
+| qq音乐 | √         | √             | 无*      |
+| more   |           |               |          |
 
-\*使用jsonp，**需要替换前端插件**， https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js => https://cdn.jsdelivr.net/npm/@xizeyoupan/meting/dist/Meting.min.js , or 
-https://unpkg.com/meting@2.0.1/dist/Meting.min.js => https://unpkg.com/@xizeyoupan/meting/dist/Meting.min.js
+\*使用jsonp，**需要替换前端插件**， https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js => https://cdn.jsdelivr.net/npm/@xizeyoupan/meting@latest/dist/Meting.min.js , or 
+https://unpkg.com/meting@2.0.1/dist/Meting.min.js => https://unpkg.com/@xizeyoupan/meting@latest/dist/Meting.min.js
 
 More info https://github.com/xizeyoupan/MetingJS
 
@@ -184,11 +186,88 @@ fork本项目后新建一个[project](https://dash.deno.com/projects)，首先�
 
 ### 反向代理
 
+对于很多HTTP框架的代理来说，只需设置X-Forwarded请求头或transparent proxy。但由于本项目使用了轻量化框架Hono，进行反向代理的时候可能会产生一些令人不适的链接。这里我用了一个自定义的请求头`X-Forwarded-Url`来暴力处理origin和路径的前缀。
+
+比如我用nginx想让请求 `http://localhost:8099/meting` 的流量全部转发到 `http://localhost:3000` ，直接这么写是不行的：
+
+```
+   server {
+      listen       8099;
+      server_name  localhost;
+
+      location /meting/ {
+         proxy_pass http://localhost:3000/;
+      }
+   }
+```
+
+正确写法：
+
+- nginx
+
+   ```
+   server {
+      listen       8099;
+      server_name  localhost;
+
+      location /meting/ {
+         proxy_pass http://localhost:3000/;
+         proxy_set_header X-Forwarded-Url $scheme://$host:$server_port/meting;
+      }
+   }
+   ```
+
+- caddy
+  
+  ```
+   http://localhost:8099 {
+         handle_path /meting* {
+                  reverse_proxy http://localhost:3000 {
+                        header_up X-Forwarded-Url {scheme}://{host}:{port}/meting
+                  }
+         }
+   }
+  ```
+
 ### SSL证书
+
+在上面基础上改动即可。
+
+- nginx
+  ```
+      server {
+        listen       8099 ssl;
+        server_name  localhost;
+
+        ssl_certificate     ../server.crt;  # pem文件的路径
+        ssl_certificate_key  ../server.key; # key文件的路径
+        ssl_session_timeout 5m;
+        ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
+        ssl_protocols TLSv1.2 TLSv1.3;
+        ssl_prefer_server_ciphers on;
+
+        location /meting/ {
+            proxy_pass http://localhost:3000/;
+            proxy_set_header X-Forwarded-Url $scheme://$host:$server_port/meting;
+        }
+      }
+  ```
+
+- caddy
+  ```
+   https://localhost:8099 {
+      tls ./server.crt ./server.key
+      handle_path /meting* {
+         reverse_proxy http://localhost:3000 {
+            header_up X-Forwarded-Url {scheme}://{host}:{port}/meting
+         }
+      }
+   }
+  ```
 
 ## 使用
 
-在导入[前端插件](https://github.com/metowolf/MetingJS)前，加入
+在导入[前端插件](https://github.com/xizeyoupan/MetingJS)前，加入
 
 ```
 <script>
@@ -205,3 +284,15 @@ var meting_api='http://localhost:3000/api?server=:server&type=:type&id=:id&auth=
 ```
 
 即可。就这样吧，那我去看vtb了，88
+
+### 相关项目
+
+https://github.com/metowolf/MetingJS
+
+https://github.com/metowolf/Meting-API
+
+https://github.com/honojs/hono
+
+https://github.com/honojs/node-server
+
+https://github.com/camsong/fetch-jsonp

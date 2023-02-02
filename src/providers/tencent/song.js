@@ -77,7 +77,7 @@ export const get_song_url = async (id, cookie = '') => {
         result.req_0.data.sip.find(i => !i.startsWith('http://ws')) ||
         result.req_0.data.sip[0];
 
-    const res = `${domain}${purl}`
+    const res = `${domain}${purl}`.replace('http://', 'https://')
     // console.log(res);
     return res;
 

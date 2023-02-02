@@ -19,8 +19,9 @@ export const get_song_url = async (id, cookie = '') => {
         },
     )
     // console.log(res)
+    const url = res.data[0]?.url?.replace('http://', 'https://')
 
-    return res.data[0]?.url || `https://music.163.com/song/media/outer/url?id=${id}.mp3`
+    return url || `https://music.163.com/song/media/outer/url?id=${id}.mp3`
 
 }
 
