@@ -11,7 +11,7 @@ function checkrefer(referer){
 export default async (ctx) => {
     const referer = ctx.req.headers.get('Referer')
     console.log(referer)
-    // 如果允许空referer则放行
+    // 如果允许空referer则放行，即只有REFERER_EMPTY为true是放行
     if( (!referer || referer === '') && !(flags.REFERER_EMPTY === true) ) {
         ctx.status(500)
         return ctx.json({ status: 500, message: 'Gateway Error' })
