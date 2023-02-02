@@ -3,12 +3,21 @@ import { get_runtime } from "../util.js"
 import flags from "../flags.js"
 import { format as lyricFormat, getPathFromURL } from "../util.js"
 
+
+function checkrefer(referer){
+    return flags.REFERER_CHECK.split(",").find(s => referer.includes(s))
+}
+
 export default async (ctx) => {
     const referer = ctx.req.headers.get('Referer')
     console.log(referer)
-    if( (!referer || referer === '') && !flags.REFERER_CHECK ) {
+    if( (!referer || referer === '') && !flags.REFERER_EMPTY ) {
         ctx.status(500)
         return ctx.json({ status: 500, message: 'Gateway Error' })
+    }
+    if( !(referer && flags.REFERER_CHECK && checkrefer(referer)) ) {
+        ctx.status(500)
+        return ctx.json({ status: 500, message: 'Error Referer' })
     }
     const p = new Providers()
 
